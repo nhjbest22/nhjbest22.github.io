@@ -1,6 +1,7 @@
 # Simple workflow for deploying static content to GitHub Pages
 name: Deploy static content to Pages
 
+# Define when the workflow should run
 on:
   # Runs on pushes targeting the default branch
   push:
@@ -11,32 +12,44 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read  # Allow reading the repository contents
+  pages: write     # Allow writing to GitHub Pages
+  id-token: write  # Allow writing an identity token
 
 # Allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
+# Define the jobs to be executed
 jobs:
   # Single deploy job since we're just deploying
   deploy:
+    # Define the deployment environment
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      name: github-pages  # Name of the deployment environment
+      url: ${{ steps.deployment.outputs.page_url }}  # URL of the deployed GitHub Pages site
+
+    # Specify the runner (execution environment) for the job
     runs-on: ubuntu-latest
+
+    # Define the steps to be executed in the job
     steps:
+      # Checkout the repository code
       - name: Checkout
         uses: actions/checkout@v3
+
+      # Setup Pages configuration
       - name: Setup Pages
         uses: actions/configure-pages@v2
+
+      # Upload the entire repository as an artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
-          path: '.'
+          path: '.'  # Upload the entire repository
+
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        id: deployment
+        id: deployment  # Unique identifier for this step
         uses: actions/deploy-pages@v1
